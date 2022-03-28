@@ -4,9 +4,21 @@
 - Complex bessel function (https://github.com/joeydumont/complex_bessel)
 - Intel MKL 2018 or later
 
+
 2. How to compile 
 
 (1) Install the libraries above (make sure that Intel MKL is correctly linked in the ITensor installation)
+LIBRARY_PATH=(path/to/intel/version)/linux/compiler/lib/intel64 -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread -lm -ldl
+INCLUDE_PATH=(path/to/intel/version)/linux/mkl/include
+
+* INCLUDE_PATH may be different in the later version (i.e. intel oneapi)
+** You may use openmp, or GNU lapack library with pthread. 
+
+
 (2) modify the Makefile;
-correct the variable LIBRARY_DIR to one's itensor installation directory.
+- Correct the variable LIBRARY_DIR to one's itensor installation directory.
+- You may need to specify the installation location of complex bessel function library.
+
 (3) Done!
+If you want to calculate the partition function of your desired one, you can change the parameters of hotrg function. 
+Description about the parameter is in the code file. 
