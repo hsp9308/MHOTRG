@@ -22,8 +22,30 @@
 using namespace std;
 using namespace itensor;
 
+/*
+
+void initial_tensor_**(ITensor &T, complex<double> beta, ...);
+
+Storing initial tensor of one's desire into ITensor object T. 
+
+You should define an initial tensor of different models if it is not in the code. 
+
+Defined models : Ising model, XY model. (For the clock model, you may change the code for the XY model. )
+
+*/
+
 void initial_tensor_Ising(ITensor &T, complex<double> beta);
 void initial_tensor_XY(ITensor &T, complex<double> beta, complex<double> h, int dcut);
+
+/*
+void hotrg(ITensor &T, Complex log_fact, int Niter, int dcut)
+
+log_fact : Natural log of partition function after 'Niter' HOTRG contractions. 
+Niter : Number of iterations of HOTRG algorithm. Niter may be different.
+dcut : Maximum bond dimensions. Memory cost of HOTRG is O(D^5). 
+
+*/
+
 void hotrg(ITensor &T, complex<double> &log_fact, int Niter, int dcut);
 
 
@@ -48,6 +70,7 @@ int main(int argc, char* argv[])
         auto T = ITensor(0);
 	initial_tensor_XY(T,K,h,dcut);
 	complex<double> log_fact = 0;
+	
         hotrg(T,log_fact,2*L,dcut);
 
         Cplx Z = log_fact;
@@ -132,6 +155,15 @@ void hotrg(ITensor &T, complex<double> &log_fact, int Niter, int dcut)
    int dxn = 0;
    log_fact = 0;
    complex<double> P;
+	
+// At every iterations, local tensor is shaped by
+//             y1
+//             |
+//             |
+//     x1 -----T----- x2
+//             |
+//             |
+//             y2
 
    for(auto n: range1(Niter))
    {
